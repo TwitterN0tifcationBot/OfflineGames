@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms & Conditions</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+html { scroll-behavior: smooth; }
+</style>
+<script>
+tailwind.config = {
+theme: {
+extend: {
+colors: {
+primary: '#4F46E5',
+secondary: '#6B7280'
+},
+borderRadius: {
+'none': '0px',
+'sm': '4px',
+DEFAULT: '8px',
+'md': '12px',
+'lg': '16px',
+'xl': '20px',
+'2xl': '24px',
+'3xl': '32px',
+'full': '9999px',
+'button': '8px'
+}
+}
+}
+}
+</script>
+</head>
+<body class="bg-gray-900 min-h-screen">
+<header class="fixed top-0 left-0 right-0 bg-gray-800 shadow-sm z-50">
+<div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+<button onclick="history.back()" class="flex items-center text-gray-400 hover:text-white cursor-pointer">
+<i class="ri-arrow-left-line ri-lg w-6 h-6 flex items-center justify-center"></i>
+<span class="ml-2">Back</span>
+</button>
+<h1 class="text-xl font-semibold text-white">Terms & Conditions</h1>
+<div class="w-20"></div>
+</div>
+</header>
+<main class="max-w-4xl mx-auto px-4 pt-24 pb-16">
+<nav class="bg-gray-800 rounded-lg p-4 mb-8 shadow-sm">
+<h2 class="text-lg font-semibold mb-4 text-white">Table of Contents</h2>
+<ul class="space-y-2">
+<li><a href="#acceptance" class="text-primary hover:underline">1. Acceptance of Terms</a></li>
+<li><a href="#user-obligations" class="text-primary hover:underline">2. User Obligations</a></li>
+<li><a href="#intellectual-property" class="text-primary hover:underline">3. Intellectual Property Rights</a></li>
+<li><a href="#privacy" class="text-primary hover:underline">4. Privacy Policy</a></li>
+<li><a href="#termination" class="text-primary hover:underline">5. Termination</a></li>
+</ul>
+</nav>
+<div class="bg-gray-800 rounded-lg p-6 shadow-sm space-y-8">
+<section id="acceptance">
+<h2 class="text-xl font-semibold mb-4 text-white">1. Acceptance of Terms</h2>
+<p class="text-gray-300 leading-relaxed">By accessing and using this website, you accept and agree to be bound by the terms and provision of this agreement. Additionally, when using this website's particular services, you shall be subject to any posted guidelines or rules applicable to such services.</p>
+</section>
+<section id="user-obligations">
+<h2 class="text-xl font-semibold mb-4 text-white">2. User Obligations</h2>
+<p class="text-gray-700 leading-relaxed mb-4">Users agree to use the website in a manner consistent with all applicable laws and regulations and in accordance with the terms and conditions set out in the policies.</p>
+<ul class="list-disc pl-6 text-gray-300 space-y-2">
+<li>Provide accurate and complete information</li>
+<li>Maintain the security of your account</li>
+<li>Not use the service for any illegal purposes</li>
+<li>Respect the intellectual property rights of others</li>
+</ul>
+</section>
+<section id="intellectual-property">
+<h2 class="text-xl font-semibold mb-4 text-white">3. Intellectual Property Rights</h2>
+<p class="text-gray-300 leading-relaxed">All content included on this website, such as text, graphics, logos, images, audio clips, digital downloads, and data compilations, is the property of the website owner or its content suppliers and is protected by international copyright laws.</p>
+</section>
+<section id="privacy">
+<h2 class="text-xl font-semibold mb-4 text-white">4. Privacy Policy</h2>
+<p class="text-gray-300 leading-relaxed">Your privacy is important to us. Our Privacy Policy explains how we collect, use, protect, and when necessary, disclose your personal information. Please read our Privacy Policy carefully before using our services.</p>
+</section>
+<section id="termination">
+<h2 class="text-xl font-semibold mb-4 text-white">5. Termination</h2>
+<p class="text-gray-300 leading-relaxed">We reserve the right to terminate or suspend access to our services immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms.</p>
+</section>
+</div>
+<footer class="mt-8 bg-gray-800 rounded-lg p-6 shadow-sm">
+<div class="border-t pt-6">
+<p class="text-gray-400 mb-2">Last Updated: March 5, 2025</p>
+<p class="text-gray-400 mb-4">For any legal inquiries, please contact: legal@company.com</p>
+<div class="flex gap-4">
+<button class="bg-primary text-white px-6 py-2 rounded-button hover:bg-primary/90 cursor-pointer">Accept Terms</button>
+<button class="bg-gray-700 text-gray-200 px-6 py-2 rounded-button hover:bg-gray-600 cursor-pointer">Decline</button>
+</div>
+</div>
+</footer>
+</main>
+<button id="backToTop" class="fixed bottom-8 right-8 bg-primary text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300 cursor-pointer">
+<i class="ri-arrow-up-line ri-lg w-6 h-6 flex items-center justify-center"></i>
+</button>
+<script>
+const backToTop = document.getElementById('backToTop');
+window.addEventListener('scroll', () => {
+if (window.scrollY > 300) {
+backToTop.style.opacity = '1';
+} else {
+backToTop.style.opacity = '0';
+}
+});
+backToTop.addEventListener('click', () => {
+window.scrollTo({ top: 0 });
+});
+document.querySelectorAll('button').forEach(button => {
+if (button.textContent.includes('Accept')) {
+button.addEventListener('click', () => {
+const toast = document.createElement('div');
+toast.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded shadow-lg';
+toast.textContent = 'Terms accepted successfully!';
+document.body.appendChild(toast);
+setTimeout(() => toast.remove(), 3000);
+});
+} else if (button.textContent.includes('Decline')) {
+button.addEventListener('click', () => {
+const toast = document.createElement('div');
+toast.className = 'fixed top-4 right-4 bg-red-500 text-white px-6 py-3 rounded shadow-lg';
+toast.textContent = 'You must accept the terms to continue.';
+document.body.appendChild(toast);
+setTimeout(() => toast.remove(), 3000);
+});
+}
+});
+</script>
+</body>
+</html>
