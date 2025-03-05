@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Game</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#4f46e5'
+                    },
+                    borderRadius: {
+                        'none': '0px',
+                        'sm': '4px',
+                        DEFAULT: '8px',
+                        'md': '12px',
+                        'lg': '16px',
+                        'xl': '20px',
+                        '2xl': '24px',
+                        '3xl': '32px',
+                        'full': '9999px',
+                        'button': '8px'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-black min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-2xl">
+        <h1 class="text-3xl font-bold text-white mb-8">Create Game</h1>
+        
+        <form id="gameForm" class="space-y-6">
+            <div class="relative">
+                <div id="iconUpload" class="w-32 h-32 bg-gray-800 rounded-lg cursor-pointer flex items-center justify-center border-2 border-dashed border-gray-600 hover:border-primary transition-colors">
+                    <div class="text-center" id="uploadContent">
+                        <div class="w-12 h-12 flex items-center justify-center mx-auto mb-2">
+                            <i class="ri-camera-line text-gray-400 text-3xl"></i>
+                        </div>
+                        <span class="text-sm text-gray-400">Upload Icon</span>
+                    </div>
+                    <img id="previewImage" class="hidden w-full h-full object-cover rounded-lg" alt="Game Icon">
+                </div>
+                <input type="file" id="iconInput" class="hidden" accept="image/*">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Game Name</label>
+                <input type="text" id="gameName" class="w-full bg-gray-800 text-white rounded-button px-4 py-3 border-none focus:ring-2 focus:ring-primary outline-none" placeholder="Enter game name">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Description</label>
+                <textarea id="gameDescription" rows="4" class="w-full bg-gray-800 text-white rounded-button px-4 py-3 border-none focus:ring-2 focus:ring-primary outline-none resize-none" placeholder="Describe your game"></textarea>
+            </div>
+
+            <div class="relative">
+                <label class="block text-sm font-medium text-gray-300 mb-2">Genre</label>
+                <button type="button" id="genreButton" class="w-full bg-gray-800 text-white rounded-button px-4 py-3 text-left flex items-center justify-between cursor-pointer">
+                    <span id="selectedGenre">Select genre</span>
+                    <div class="w-5 h-5 flex items-center justify-center">
+                        <i class="ri-arrow-down-s-line"></i>
+                    </div>
+                </button>
+                <div id="genreDropdown" class="hidden absolute w-full mt-2 bg-gray-800 rounded-lg shadow-xl z-10">
+                    <div class="py-1">
+                        <div class="genre-option px-4 py-2 text-white hover:bg-gray-700 cursor-pointer">Action</div>
+                        <div class="genre-option px-4 py-2 text-white hover:bg-gray-700 cursor-pointer">Adventure</div>
+                        <div class="genre-option px-4 py-2 text-white hover:bg-gray-700 cursor-pointer">Puzzle</div>
+                        <div class="genre-option px-4 py-2 text-white hover:bg-gray-700 cursor-pointer">Strategy</div>
+                        <div class="genre-option px-4 py-2 text-white hover:bg-gray-700 cursor-pointer">RPG</div>
+                        <div class="genre-option px-4 py-2 text-white hover:bg-gray-700 cursor-pointer">Sports</div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" id="submitButton" class="w-full bg-primary hover:bg-secondary text-white font-semibold py-3 px-6 rounded-button transition-colors cursor-pointer whitespace-nowrap">
+                Create Game
+            </button>
+        </form>
+    </div>
+
+    <div id="toast" class="fixed bottom-4 right-4 bg-gray-800 text-white px-6 py-3 rounded-lg shadow-lg transform translate-y-full opacity-0 transition-all duration-300 hidden">
+        <span id="toastMessage"></span>
+    </div>
+
+    <script>
+        let gameData = null;
+        const iconUpload = document.getElementById('iconUpload');
+        const iconInput = document.getElementById('iconInput');
+        const previewImage = document.getElementById('previewImage');
+        const uploadContent = document.getElementById('uploadContent');
+        const genreButton = document.getElementById('genreButton');
+        const genreDropdown = document.getElementById('genreDropdown');
+        const selectedGenre = document.getElementById('selectedGenre');
+        const gameForm = document.getElementById('gameForm');
+        const submitButton = document.getElementById('submitButton');
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            toastMessage.textContent = message;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.remove('translate-y-full', 'opacity-0');
+            }, 100);
+            setTimeout(() => {
+                toast.classList.add('translate-y-full', 'opacity-0');
+                setTimeout(() => {
+                    toast.classList.add('hidden');
+                }, 300);
+            }, 3000);
+        }
+
+        iconUpload.addEventListener('click', () => iconInput.click());
+
+        iconInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    previewImage.src = e.target.result;
+                    previewImage.classList.remove('hidden');
+                    uploadContent.classList.add('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        genreButton.addEventListener('click', () => {
+            genreDropdown.classList.toggle('hidden');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!genreButton.contains(e.target) && !genreDropdown.contains(e.target)) {
+                genreDropdown.classList.add('hidden');
+            }
+        });
+
+        document.querySelectorAll('.genre-option').forEach(option => {
+            option.addEventListener('click', () => {
+                selectedGenre.textContent = option.textContent;
+                genreDropdown.classList.add('hidden');
+            });
+        });
+
+        gameForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = {
+                name: document.getElementById('gameName').value,
+                description: document.getElementById('gameDescription').value,
+                genre: selectedGenre.textContent,
+                icon: previewImage.src
+            };
+
+            if (gameData) {
+                showToast('Game updated successfully!');
+            } else {
+                showToast('Game created successfully!');
+                gameData = formData;
+                submitButton.textContent = 'Update Game';
+            }
+        });
+
+        window.addEventListener('load', () => {
+            if (gameData) {
+                document.getElementById('gameName').value = gameData.name;
+                document.getElementById('gameDescription').value = gameData.description;
+                selectedGenre.textContent = gameData.genre;
+                previewImage.src = gameData.icon;
+                previewImage.classList.remove('hidden');
+                uploadContent.classList.add('hidden');
+                submitButton.textContent = 'Update Game';
+            }
+        });
+    </script>
+</body>
+</html>
