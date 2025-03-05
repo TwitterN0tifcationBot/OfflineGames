@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Game Hub - Play Amazing Games</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+theme: {
+extend: {
+colors: {
+primary: '#6366f1',
+secondary: '#4f46e5'
+},
+borderRadius: {
+'none': '0px',
+'sm': '4px',
+DEFAULT: '8px',
+'md': '12px',
+'lg': '16px',
+'xl': '20px',
+'2xl': '24px',
+'3xl': '32px',
+'full': '9999px',
+'button': '8px'
+}
+}
+}
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+.game-card:hover .game-overlay { opacity: 1; }
+.modal { display: none; }
+.modal.active { display: flex; }
+select { appearance: none; }
+</style>
+</head>
+<body class="bg-gray-900 min-h-screen text-gray-100">
+<header class="bg-gray-800 shadow-sm fixed w-full z-50">
+<div class="container mx-auto px-4">
+<nav class="flex items-center justify-between h-16">
+<a href="#" class="font-['Pacifico'] text-2xl text-primary">logo</a>
+<div class="relative flex-1 max-w-xl mx-8">
+<input type="text" placeholder="Search games..." class="w-full pl-10 pr-4 py-2 text-sm border border-gray-700 bg-gray-800 text-gray-100 rounded-full focus:outline-none focus:border-primary">
+<div class="absolute left-3 top-0 h-full w-4 flex items-center justify-center">
+<i class="ri-search-line text-gray-400"></i>
+</div>
+</div>
+<div class="flex items-center space-x-4">
+<button class="bg-primary text-white px-4 py-2 rounded-button hover:bg-primary/90 transition-colors cursor-pointer">Create Game</button>
+<button class="w-8 h-8 flex items-center justify-center relative cursor-pointer">
+<i class="ri-notification-3-line text-gray-600"></i>
+<span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center cursor-pointer">
+<i class="ri-user-line text-gray-600"></i>
+</button>
+</div>
+</nav>
+</div>
+</header>
+<main class="pt-16">
+<div class="relative h-[500px] bg-gradient-to-r from-primary/20 to-gray-800 overflow-hidden">
+<div class="container mx-auto px-4 h-full flex items-center">
+<div class="w-1/2">
+<h1 class="text-5xl font-bold mb-6">Discover Amazing Games</h1>
+<p class="text-xl text-gray-300 mb-8">Join millions of players worldwide and experience the best gaming platform.</p>
+<button class="bg-primary text-white px-8 py-3 rounded-button text-lg font-medium hover:bg-primary/90 transition-colors cursor-pointer">Start Playing</button>
+</div>
+<div class="absolute right-0 top-0 w-1/2 h-full">
+<img src="https://public.readdy.ai/ai/img_res/845acde39452a0e46dddf44bad62feef.jpg" class="object-cover w-full h-full" alt="Gaming Setup">
+</div>
+</div>
+</div>
+<div class="container mx-auto px-4 py-8">
+<div class="flex items-center justify-between mb-8">
+<div class="flex items-center space-x-4">
+<button class="relative group px-4 py-2 rounded-button border cursor-pointer">
+<div class="flex items-center">
+<span class="mr-2">Categories</span>
+<i class="ri-arrow-down-s-line"></i>
+</div>
+<div class="absolute top-full left-0 mt-2 w-48 bg-gray-800 rounded shadow-lg hidden group-hover:block">
+<div class="py-1">
+<a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Action</a>
+<a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Adventure</a>
+<a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Strategy</a>
+<a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">RPG</a>
+<a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Sports</a>
+</div>
+</div>
+</button>
+<button class="relative group px-4 py-2 rounded-button border cursor-pointer">
+<div class="flex items-center">
+<span class="mr-2">Sort By</span>
+<i class="ri-arrow-down-s-line"></i>
+</div>
+<div class="absolute top-full left-0 mt-2 w-48 bg-gray-800 rounded shadow-lg hidden group-hover:block">
+<div class="py-1">
+<a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Most Popular</a>
+<a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">New Releases</a>
+<a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Top Rated</a>
+</div>
+</div>
+</button>
+</div>
+<div class="flex items-center space-x-2">
+<button class="w-8 h-8 flex items-center justify-center rounded border cursor-pointer active">
+<i class="ri-grid-fill text-primary"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded border cursor-pointer">
+<i class="ri-list-check-2"></i>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+<div class="game-card bg-gray-800 rounded-lg shadow-sm overflow-hidden cursor-pointer">
+<div class="relative">
+<img src="https://public.readdy.ai/ai/img_res/ae0af0c2255868a102749a669550176b.jpg" class="w-full h-48 object-cover" alt="Number Puzzle">
+<div class="game-overlay absolute inset-0 bg-black/50 opacity-0 transition-opacity flex items-center justify-center space-x-2">
+<button class="bg-white text-primary px-6 py-2 rounded-button font-medium">Play Now</button>
+<button class="bg-red-500 text-white px-6 py-2 rounded-button font-medium report-btn">Report</button>
+</div>
+</div>
+<div class="p-4">
+<div class="flex items-center justify-between mb-2">
+<h3 class="font-semibold">Number Puzzle</h3>
+<div class="flex items-center">
+<i class="ri-star-fill text-yellow-400 mr-1"></i>
+<span class="text-sm">4.8</span>
+</div>
+</div>
+<p class="text-sm text-gray-400 mb-2">Puzzle</p>
+<div class="flex items-center text-sm text-gray-500">
+<i class="ri-group-line mr-1"></i>
+<span>1.5M players</span>
+</div>
+</div>
+</div>
+<div class="game-card bg-gray-800 rounded-lg shadow-sm overflow-hidden cursor-pointer">
+<div class="relative">
+<img src="https://public.readdy.ai/ai/img_res/794c9efcd9bb2d1959940fdc940e7a2c.jpg" class="w-full h-48 object-cover" alt="Retro Racer">
+<div class="game-overlay absolute inset-0 bg-black/50 opacity-0 transition-opacity flex items-center justify-center space-x-2">
+<button class="bg-white text-primary px-6 py-2 rounded-button font-medium">Play Now</button>
+<button class="bg-red-500 text-white px-6 py-2 rounded-button font-medium report-btn">Report</button>
+</div>
+</div>
+<div class="p-4">
+<div class="flex items-center justify-between mb-2">
+<h3 class="font-semibold">Retro Racer</h3>
+<div class="flex items-center">
+<i class="ri-star-fill text-yellow-400 mr-1"></i>
+<span class="text-sm">4.6</span>
+</div>
+</div>
+<p class="text-sm text-gray-400 mb-2">2D Racing</p>
+<div class="flex items-center text-sm text-gray-500">
+<i class="ri-group-line mr-1"></i>
+<span>2.1M players</span>
+</div>
+</div>
+</div>
+<div class="game-card bg-gray-800 rounded-lg shadow-sm overflow-hidden cursor-pointer">
+<div class="relative">
+<img src="https://public.readdy.ai/ai/img_res/1b6f40f92e523ddaa573def3225e2194.jpg" class="w-full h-48 object-cover" alt="Tic Tac Toe">
+<div class="game-overlay absolute inset-0 bg-black/50 opacity-0 transition-opacity flex items-center justify-center space-x-2">
+<button class="bg-white text-primary px-6 py-2 rounded-button font-medium">Play Now</button>
+<button class="bg-red-500 text-white px-6 py-2 rounded-button font-medium report-btn">Report</button>
+</div>
+</div>
+<div class="p-4">
+<div class="flex items-center justify-between mb-2">
+<h3 class="font-semibold">Tic Tac Toe</h3>
+<div class="flex items-center">
+<i class="ri-star-fill text-yellow-400 mr-1"></i>
+<span class="text-sm">4.7</span>
+</div>
+</div>
+<p class="text-sm text-gray-400 mb-2">Strategy</p>
+<div class="flex items-center text-sm text-gray-500">
+<i class="ri-group-line mr-1"></i>
+<span>3.2M players</span>
+</div>
+</div>
+</div>
+<div class="game-card bg-gray-800 rounded-lg shadow-sm overflow-hidden cursor-pointer">
+<div class="relative">
+<img src="https://public.readdy.ai/ai/img_res/7937fba12eb2f2f5f21bcd58ecada976.jpg" class="w-full h-48 object-cover" alt="Rock Paper Scissors">
+<div class="game-overlay absolute inset-0 bg-black/50 opacity-0 transition-opacity flex items-center justify-center space-x-2">
+<button class="bg-white text-primary px-6 py-2 rounded-button font-medium">Play Now</button>
+<button class="bg-red-500 text-white px-6 py-2 rounded-button font-medium report-btn">Report</button>
+</div>
+</div>
+<div class="p-4">
+<div class="flex items-center justify-between mb-2">
+<h3 class="font-semibold">Rock Paper Scissors</h3>
+<div class="flex items-center">
+<i class="ri-star-fill text-yellow-400 mr-1"></i>
+<span class="text-sm">4.5</span>
+</div>
+</div>
+<p class="text-sm text-gray-400 mb-2">Casual</p>
+<div class="flex items-center text-sm text-gray-500">
+<i class="ri-group-line mr-1"></i>
+<span>1.8M players</span>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-8 flex justify-center">
+<button class="bg-white border border-gray-200 text-gray-600 px-6 py-2 rounded-button hover:bg-gray-50 cursor-pointer">Load More Games</button>
+</div>
+</div>
+</main>
+<footer class="bg-gray-800 border-t border-gray-700 mt-16">
+<div class="container mx-auto px-4 py-12">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+<div>
+<h4 class="font-semibold mb-4">About Us</h4>
+<ul class="space-y-2">
+<li><a href="#" class="text-gray-600 hover:text-primary">About</a></li>
+<li><a href="#" class="text-gray-600 hover:text-primary">Careers</a></li>
+<li><a href="#" class="text-gray-600 hover:text-primary">Press</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-semibold mb-4">Support</h4>
+<ul class="space-y-2">
+<li><a href="#" class="text-gray-600 hover:text-primary">Help Center</a></li>
+<li><a href="#" class="text-gray-600 hover:text-primary">Safety</a></li>
+<li><a href="#" class="text-gray-600 hover:text-primary">Terms</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-semibold mb-4">Follow Us</h4>
+<div class="flex space-x-4">
+<a href="#" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-primary hover:text-white cursor-pointer">
+<i class="ri-twitter-fill"></i>
+</a>
+<a href="#" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-primary hover:text-white cursor-pointer">
+<i class="ri-facebook-fill"></i>
+</a>
+<a href="#" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-primary hover:text-white cursor-pointer">
+<i class="ri-instagram-fill"></i>
+</a>
+</div>
+</div>
+<div>
+<h4 class="font-semibold mb-4">Newsletter</h4>
+<div class="flex">
+<input type="email" placeholder="Enter your email" class="flex-1 px-4 py-2 border border-gray-700 bg-gray-800 text-gray-100 rounded-l-button focus:outline-none focus:border-primary">
+<button class="bg-primary text-white px-4 py-2 rounded-r-button hover:bg-primary/90 cursor-pointer">Subscribe</button>
+</div>
+</div>
+</div>
+<div class="border-t mt-12 pt-8 text-center text-gray-600">
+<p>&copy; 2025 Game Hub. All rights reserved.</p>
+</div>
+</div>
+</footer>
+<div id="gameModal" class="modal fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+<div class="bg-gray-800 rounded-lg w-full max-w-2xl mx-4">
+<div class="p-6">
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-2xl font-semibold">Game Details</h2>
+<button class="text-gray-400 hover:text-gray-600 cursor-pointer" onclick="closeModal()">
+<i class="ri-close-line text-2xl"></i>
+</button>
+</div>
+<div id="modalContent"></div>
+</div>
+</div>
+</div>
+<script>
+const gameCards = document.querySelectorAll('.game-card');
+const modal = document.getElementById('gameModal');
+const modalContent = document.getElementById('modalContent');
+document.querySelectorAll('.report-btn').forEach(btn => {
+btn.addEventListener('click', (e) => {
+e.stopPropagation();
+const gameTitle = e.target.closest('.game-card').querySelector('h3').textContent;
+modalContent.innerHTML = `
+<div class="p-6">
+<h3 class="text-xl font-semibold mb-4">Report "${gameTitle}"</h3>
+<select class="w-full mb-4 p-2 border border-gray-700 bg-gray-800 text-gray-100 rounded-button" required>
+<option value="">Select reason</option>
+<option value="inappropriate">Inappropriate Content</option>
+<option value="bug">Bug/Technical Issue</option>
+<option value="offensive">Offensive Content</option>
+<option value="other">Other</option>
+</select>
+<textarea class="w-full h-32 p-2 border border-gray-700 bg-gray-800 text-gray-100 rounded-button mb-4" placeholder="Describe the issue..." required></textarea>
+<div class="flex justify-end space-x-2">
+<button onclick="closeModal()" class="px-4 py-2 border rounded-button">Cancel</button>
+<button onclick="submitReport()" class="bg-red-500 text-white px-4 py-2 rounded-button">Submit Report</button>
+</div>
+</div>
+`;
+modal.classList.add('active');
+});
+});
+document.querySelector('button:contains("Create Game")').addEventListener('click', () => {
+modalContent.innerHTML = `
+<div class="p-6">
+<h3 class="text-xl font-semibold mb-4">Create New Game</h3>
+<form id="createGameForm" class="space-y-4">
+<div>
+<label class="block text-sm font-medium mb-1">Game Title</label>
+<input type="text" class="w-full p-2 border rounded-button" required>
+</div>
+<div>
+<label class="block text-sm font-medium mb-1">Category</label>
+<select class="w-full p-2 border rounded-button" required>
+<option value="">Select category</option>
+<option value="action">Action</option>
+<option value="puzzle">Puzzle</option>
+<option value="strategy">Strategy</option>
+<option value="casual">Casual</option>
+</select>
+</div>
+<div>
+<label class="block text-sm font-medium mb-1">Game Description</label>
+<textarea class="w-full h-32 p-2 border rounded-button" required></textarea>
+</div>
+<div>
+<label class="block text-sm font-medium mb-1">Game Thumbnail</label>
+<input type="file" accept="image/*" class="w-full p-2 border rounded-button" required>
+</div>
+<div class="flex justify-end space-x-2">
+<button type="button" onclick="closeModal()" class="px-4 py-2 border rounded-button">Cancel</button>
+<button type="submit" class="bg-primary text-white px-4 py-2 rounded-button">Create Game</button>
+</div>
+</form>
+</div>
+`;
+modal.classList.add('active');
+document.getElementById('createGameForm').addEventListener('submit', (e) => {
+e.preventDefault();
+// Handle form submission
+closeModal();
+});
+});
+function submitReport() {
+// Handle report submission
+closeModal();
+}
+gameCards.forEach(card => {
+card.addEventListener('click', () => {
+const gameTitle = card.querySelector('h3').textContent;
+const gameImage = card.querySelector('img').src;
+const gameRating = card.querySelector('.text-sm').textContent;
+const gameCategory = card.querySelector('.text-gray-600').textContent;
+const gamePlayers = card.querySelector('.text-gray-500 span').textContent;
+modalContent.innerHTML = `
+<img src="${gameImage}" class="w-full h-64 object-cover rounded mb-4" alt="${gameTitle}">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-xl font-semibold">${gameTitle}</h3>
+<div class="flex items-center">
+<i class="ri-star-fill text-yellow-400 mr-1"></i>
+<span>${gameRating}</span>
+</div>
+</div>
+<p class="text-gray-600 mb-2">${gameCategory}</p>
+<div class="flex items-center text-gray-500 mb-6">
+<i class="ri-group-line mr-1"></i>
+<span>${gamePlayers}</span>
+</div>
+<button class="w-full bg-primary text-white py-3 rounded-button font-medium hover:bg-primary/90">Play Now</button>
+`;
+modal.classList.add('active');
+});
+});
+function closeModal() {
+modal.classList.remove('active');
+}
+modal.addEventListener('click', (e) => {
+if (e.target === modal) {
+closeModal();
+}
+});
+document.addEventListener('keydown', (e) => {
+if (e.key === 'Escape') {
+closeModal();
+}
+});
+</script>
+</body>
+</html>
