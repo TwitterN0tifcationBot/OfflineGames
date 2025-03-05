@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Gaming Trial</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+        .timer-box { background: linear-gradient(135deg, rgba(31,41,55,0.8), rgba(17,24,39,0.9)); }
+        .notification { animation: slideIn 0.3s ease-out; }
+        @keyframes slideIn {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#4f46e5'
+                    },
+                    borderRadius: {
+                        'none': '0px',
+                        'sm': '4px',
+                        DEFAULT: '8px',
+                        'md': '12px',
+                        'lg': '16px',
+                        'xl': '20px',
+                        '2xl': '24px',
+                        '3xl': '32px',
+                        'full': '9999px',
+                        'button': '8px'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen">
+    <nav class="bg-gray-800/50 backdrop-blur-sm border-b border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl font-['Pacifico']">logo</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="#" class="hover:text-primary cursor-pointer">Home</a>
+                    <a href="#" class="hover:text-primary cursor-pointer">Games</a>
+                    <a href="#" class="hover:text-primary cursor-pointer">Support</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold mb-4">Free 7-Day Gaming Trial</h1>
+            <p class="text-xl text-gray-400">Experience unlimited access to our premium games collection</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8 items-center mb-12">
+            <div>
+                <img src="https://public.readdy.ai/ai/img_res/2da67a1f54498ccf270bb7f310364cf4.jpg" alt="Gaming Setup" class="rounded-lg shadow-2xl">
+            </div>
+            <div class="timer-box p-8 rounded-lg">
+                <div id="trialStatus" class="text-2xl font-bold mb-6">Trial Status: Not Started</div>
+                <div id="timeRemaining" class="text-4xl font-bold mb-8">7 Days Remaining</div>
+                <button id="claimButton" class="bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-button text-lg font-semibold w-full mb-4 cursor-pointer">Claim Your Trial</button>
+                <div class="text-sm text-gray-400">* Trial begins immediately after claiming</div>
+            </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8 mb-12">
+            <div class="bg-gray-800 p-8 rounded-lg">
+                <h2 class="text-2xl font-bold mb-6">Trial Benefits</h2>
+                <ul class="space-y-4">
+                    <li class="flex items-center">
+                        <i class="ri-checkbox-circle-line text-primary mr-3"></i>
+                        <span>Access to 100+ Premium Games</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="ri-checkbox-circle-line text-primary mr-3"></i>
+                        <span>Unlimited Gameplay Hours</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="ri-checkbox-circle-line text-primary mr-3"></i>
+                        <span>Cloud Save Support</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="ri-checkbox-circle-line text-primary mr-3"></i>
+                        <span>HD Graphics Options</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="bg-gray-800 p-8 rounded-lg">
+                <h2 class="text-2xl font-bold mb-6">Redeem Developer Code</h2>
+                <div class="space-y-4">
+                    <input type="text" id="codeInput" placeholder="Enter your code" class="w-full bg-gray-700 border-none rounded-button px-4 py-3 text-white placeholder-gray-400">
+                    <button id="redeemButton" class="bg-secondary hover:bg-secondary/90 text-white px-6 py-3 rounded-button w-full cursor-pointer">Redeem Code</button>
+                    <p class="text-sm text-gray-400">* Codes are exclusively generated by developers</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="notification" class="fixed top-0 left-0 right-0 hidden">
+        <div class="max-w-md mx-auto m-4 p-4 bg-gray-800 rounded-lg shadow-lg border border-gray-700">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <i class="ri-information-line text-primary mr-3"></i>
+                    <span id="notificationMessage"></span>
+                </div>
+                <button onclick="closeNotification()" class="text-gray-400 hover:text-white cursor-pointer">
+                    <i class="ri-close-line"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let trialActive = false;
+        let trialEndDate = null;
+        const notification = document.getElementById('notification');
+        const notificationMessage = document.getElementById('notificationMessage');
+        const trialStatus = document.getElementById('trialStatus');
+        const timeRemaining = document.getElementById('timeRemaining');
+        const claimButton = document.getElementById('claimButton');
+        const redeemButton = document.getElementById('redeemButton');
+
+        function showNotification(message) {
+            notificationMessage.textContent = message;
+            notification.classList.remove('hidden');
+            setTimeout(() => closeNotification(), 5000);
+        }
+
+        function closeNotification() {
+            notification.classList.add('hidden');
+        }
+
+        function updateTrialStatus() {
+            if (!trialActive || !trialEndDate) return;
+            
+            const now = new Date();
+            const diff = trialEndDate - now;
+            const daysLeft = Math.ceil(diff / (1000 * 60 * 60 * 24));
+            
+            if (daysLeft <= 0) {
+                trialActive = false;
+                trialStatus.textContent = 'Trial Status: Expired';
+                timeRemaining.textContent = 'Trial Ended';
+                showNotification('Your trial period has ended. Thank you for trying our service!');
+                claimButton.textContent = 'Trial Ended';
+                claimButton.disabled = true;
+                claimButton.classList.add('opacity-50');
+            } else {
+                trialStatus.textContent = 'Trial Status: Active';
+                timeRemaining.textContent = `${daysLeft} Days Remaining`;
+            }
+        }
+
+        claimButton.addEventListener('click', () => {
+            if (!trialActive) {
+                trialActive = true;
+                trialEndDate = new Date();
+                trialEndDate.setDate(trialEndDate.getDate() + 7);
+                showNotification('Trial successfully activated! Enjoy 7 days of unlimited gaming.');
+                updateTrialStatus();
+            }
+        });
+
+        redeemButton.addEventListener('click', () => {
+            const code = document.getElementById('codeInput').value.trim();
+            if (code) {
+                showNotification('Invalid code. Please contact developers for a valid code.');
+                document.getElementById('codeInput').value = '';
+            }
+        });
+
+        setInterval(updateTrialStatus, 1000);
+    </script>
+</body>
+</html>
